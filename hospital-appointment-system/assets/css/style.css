@@ -1,0 +1,457 @@
+/* =====================================================================
+   assets/css/style.css
+   Hospital Appointment Management System (HAMS)
+   ---------------------------------------------------------------------
+   Design tokens
+   Colors   : Sky Blue #38BDF8 (primary) / Lime Green #84CC16 (secondary)
+   Type     : "Plus Jakarta Sans" (headings/UI) + "Inter" (body/data)
+   Signature: the "pulse" accent — a soft heartbeat-line motif used
+              sparingly on the auth screens and the sidebar brand mark,
+              nodding to the clinical subject without being literal.
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* =====================================================================
+   1. DESIGN TOKENS (CSS Variables)
+   ===================================================================== */
+:root {
+    /* Brand */
+    --hams-primary: #38BDF8;
+    --hams-primary-dark: #0EA5E9;
+    --hams-primary-darker: #0284C7;
+    --hams-primary-light: #E0F5FE;
+    --hams-secondary: #84CC16;
+    --hams-secondary-dark: #65A30D;
+    --hams-secondary-light: #EEFBD8;
+
+    /* Semantic */
+    --hams-success: #22C55E;
+    --hams-warning: #F59E0B;
+    --hams-danger: #EF4444;
+    --hams-info: #38BDF8;
+
+    /* Surfaces — Light mode */
+    --hams-bg: #F4F8FB;
+    --hams-surface: #FFFFFF;
+    --hams-surface-alt: #F0F9FF;
+    --hams-border: #E2E8F0;
+    --hams-text: #0F172A;
+    --hams-text-muted: #64748B;
+    --hams-sidebar-bg: #0C4A6E;
+    --hams-sidebar-text: #BAE6FD;
+    --hams-sidebar-active: #38BDF8;
+
+    /* Layout */
+    --hams-sidebar-width: 264px;
+    --hams-sidebar-collapsed: 84px;
+    --hams-topbar-height: 68px;
+    --hams-radius: 14px;
+    --hams-radius-sm: 8px;
+    --hams-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+    --hams-shadow-lg: 0 10px 32px rgba(15, 23, 42, 0.10);
+    --hams-transition: all 0.2s ease-in-out;
+
+    --font-heading: 'Plus Jakarta Sans', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+/* Dark Mode overrides — toggled via [data-bs-theme="dark"] on <html> */
+[data-bs-theme="dark"] {
+    --hams-bg: #0B1220;
+    --hams-surface: #121B2E;
+    --hams-surface-alt: #18233A;
+    --hams-border: #24304A;
+    --hams-text: #E7EEF7;
+    --hams-text-muted: #93A4C3;
+    --hams-sidebar-bg: #0A1526;
+    --hams-sidebar-text: #8FB8DA;
+    --hams-sidebar-active: #38BDF8;
+    --hams-primary-light: #0F2A3D;
+    --hams-secondary-light: #1C2A0E;
+    --hams-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    --hams-shadow-lg: 0 10px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* =====================================================================
+   2. BASE / RESET
+   ===================================================================== */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--hams-bg);
+    color: var(--hams-text);
+    transition: background-color 0.25s ease, color 0.25s ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--hams-text);
+}
+
+a { text-decoration: none; }
+
+::selection { background: var(--hams-secondary); color: #0F172A; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--hams-border); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--hams-primary); }
+
+/* Bootstrap primary/secondary color overrides */
+.text-primary   { color: var(--hams-primary) !important; }
+.text-secondary-accent { color: var(--hams-secondary) !important; }
+.bg-primary-soft   { background: var(--hams-primary-light) !important; }
+.bg-secondary-soft { background: var(--hams-secondary-light) !important; }
+
+.btn-primary {
+    background-color: var(--hams-primary);
+    border-color: var(--hams-primary);
+    color: #fff;
+    font-weight: 600;
+    transition: var(--hams-transition);
+}
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--hams-primary-darker);
+    border-color: var(--hams-primary-darker);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(56, 189, 248, 0.35);
+}
+
+.btn-secondary {
+    background-color: var(--hams-secondary);
+    border-color: var(--hams-secondary);
+    color: #0F172A;
+    font-weight: 600;
+    transition: var(--hams-transition);
+}
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: var(--hams-secondary-dark);
+    border-color: var(--hams-secondary-dark);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(132, 204, 22, 0.35);
+}
+
+.btn-outline-primary {
+    color: var(--hams-primary-darker);
+    border-color: var(--hams-primary);
+}
+.btn-outline-primary:hover {
+    background-color: var(--hams-primary);
+    border-color: var(--hams-primary);
+    transform: translateY(-1px);
+}
+
+.btn { border-radius: var(--hams-radius-sm); }
+.btn:active { transform: scale(0.98); }
+
+/* =====================================================================
+   3. LAYOUT SHELL (sidebar + topbar + content)
+   ===================================================================== */
+.hams-wrapper { display: flex; min-height: 100vh; }
+
+/* ---- Sidebar ---- */
+.hams-sidebar {
+    width: var(--hams-sidebar-width);
+    flex-shrink: 0;
+    background: var(--hams-sidebar-bg);
+    color: var(--hams-sidebar-text);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1040;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, width 0.25s ease;
+}
+
+.hams-sidebar .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 22px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.hams-sidebar .brand-mark {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--hams-primary), var(--hams-secondary));
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: #06202E;
+    font-weight: 800;
+}
+
+.hams-sidebar .brand-text { font-family: var(--font-heading); font-weight: 800; font-size: 1.05rem; color: #fff; line-height: 1.1; }
+.hams-sidebar .brand-text small { display:block; font-weight:500; font-size:.68rem; color: var(--hams-sidebar-text); letter-spacing:.06em; }
+
+.hams-nav { flex: 1; overflow-y: auto; padding: 14px 12px; }
+.hams-nav .nav-section-label {
+    font-size: .7rem; text-transform: uppercase; letter-spacing: .08em;
+    color: rgba(186, 230, 253, 0.45); margin: 16px 10px 6px;
+    font-weight: 700;
+}
+.hams-nav .nav-link {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--hams-sidebar-text);
+    padding: 10px 12px; border-radius: 10px;
+    font-size: .92rem; font-weight: 500;
+    margin-bottom: 2px;
+    transition: var(--hams-transition);
+}
+.hams-nav .nav-link i { font-size: 1.05rem; width: 20px; text-align: center; }
+.hams-nav .nav-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.hams-nav .nav-link.active {
+    background: linear-gradient(90deg, rgba(56,189,248,0.18), rgba(132,204,22,0.10));
+    color: #fff;
+    border-left: 3px solid var(--hams-sidebar-active);
+    padding-left: 9px;
+}
+.hams-nav .nav-link .badge { margin-left: auto; }
+
+.hams-sidebar .sidebar-footer {
+    padding: 14px 18px; border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: .74rem; color: rgba(186, 230, 253, 0.5);
+}
+
+/* ---- Topbar ---- */
+.hams-main { flex: 1; margin-left: var(--hams-sidebar-width); display: flex; flex-direction: column; min-height: 100vh; transition: margin-left 0.25s ease; }
+
+.hams-topbar {
+    height: var(--hams-topbar-height);
+    background: var(--hams-surface);
+    border-bottom: 1px solid var(--hams-border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 22px;
+    position: sticky; top: 0; z-index: 1030;
+}
+
+.hams-topbar .sidebar-toggle-btn, .hams-topbar .icon-btn {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid var(--hams-border);
+    background: var(--hams-surface-alt);
+    color: var(--hams-text);
+    transition: var(--hams-transition);
+    position: relative;
+}
+.hams-topbar .icon-btn:hover, .hams-topbar .sidebar-toggle-btn:hover { background: var(--hams-primary-light); border-color: var(--hams-primary); color: var(--hams-primary-darker); }
+
+.hams-topbar .notif-dot {
+    position: absolute; top: 6px; right: 6px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--hams-danger);
+    border: 2px solid var(--hams-surface);
+}
+
+/* Theme toggle switch */
+.theme-toggle {
+    width: 52px; height: 30px; border-radius: 30px;
+    background: var(--hams-surface-alt);
+    border: 1px solid var(--hams-border);
+    position: relative; cursor: pointer;
+    display: inline-flex; align-items: center;
+    padding: 3px;
+    transition: var(--hams-transition);
+}
+.theme-toggle .knob {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--hams-primary), var(--hams-secondary));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: .68rem;
+    transition: transform 0.25s ease;
+}
+[data-bs-theme="dark"] .theme-toggle .knob { transform: translateX(22px); }
+
+/* ---- Page content ---- */
+.hams-content { padding: 24px; flex: 1; }
+
+.hams-footer {
+    padding: 16px 24px; text-align: center;
+    font-size: .82rem; color: var(--hams-text-muted);
+    border-top: 1px solid var(--hams-border);
+    background: var(--hams-surface);
+}
+
+/* =====================================================================
+   4. CARDS / STAT WIDGETS
+   ===================================================================== */
+.hams-card, .card {
+    background: var(--hams-surface);
+    border: 1px solid var(--hams-border);
+    border-radius: var(--hams-radius);
+    box-shadow: var(--hams-shadow);
+}
+
+.stat-card {
+    border-radius: var(--hams-radius);
+    padding: 20px;
+    background: var(--hams-surface);
+    border: 1px solid var(--hams-border);
+    display: flex; align-items: center; gap: 16px;
+    transition: var(--hams-transition);
+}
+.stat-card:hover { transform: translateY(-3px); box-shadow: var(--hams-shadow-lg); }
+
+.stat-card .stat-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+}
+.stat-icon.icon-primary { background: var(--hams-primary-light); color: var(--hams-primary-darker); }
+.stat-icon.icon-secondary { background: var(--hams-secondary-light); color: var(--hams-secondary-dark); }
+.stat-icon.icon-warning { background: #FEF3C7; color: #B45309; }
+.stat-icon.icon-danger { background: #FEE2E2; color: #B91C1C; }
+
+.stat-card .stat-value { font-family: var(--font-heading); font-size: 1.65rem; font-weight: 800; line-height: 1.1; }
+.stat-card .stat-label { font-size: .82rem; color: var(--hams-text-muted); font-weight: 500; }
+.stat-card .stat-trend { font-size: .76rem; font-weight: 600; }
+
+/* =====================================================================
+   5. TABLES
+   ===================================================================== */
+.table-responsive-card {
+    background: var(--hams-surface);
+    border: 1px solid var(--hams-border);
+    border-radius: var(--hams-radius);
+    overflow: hidden;
+}
+.table { color: var(--hams-text); margin-bottom: 0; }
+.table thead th {
+    background: var(--hams-surface-alt);
+    font-size: .76rem; text-transform: uppercase; letter-spacing: .05em;
+    color: var(--hams-text-muted); font-weight: 700;
+    border-bottom: 1px solid var(--hams-border);
+    padding: 14px 16px;
+}
+.table td { padding: 13px 16px; vertical-align: middle; border-bottom: 1px solid var(--hams-border); font-size: .9rem; }
+.table tbody tr:last-child td { border-bottom: none; }
+.table tbody tr:hover { background: var(--hams-surface-alt); }
+[data-bs-theme="dark"] .table { --bs-table-bg: transparent; }
+
+.avatar-sm { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--hams-border); }
+.avatar-md { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--hams-border); }
+.avatar-lg { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3px solid var(--hams-primary-light); }
+
+/* =====================================================================
+   6. FORMS — floating labels, modern inputs
+   ===================================================================== */
+.form-control, .form-select {
+    border-radius: var(--hams-radius-sm);
+    border: 1px solid var(--hams-border);
+    background-color: var(--hams-surface);
+    color: var(--hams-text);
+    padding: 0.65rem 0.9rem;
+    font-size: .92rem;
+}
+.form-control:focus, .form-select:focus {
+    border-color: var(--hams-primary);
+    box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.18);
+    background-color: var(--hams-surface);
+    color: var(--hams-text);
+}
+.form-floating > label { color: var(--hams-text-muted); }
+.form-label { font-weight: 600; font-size: .87rem; color: var(--hams-text); margin-bottom: .4rem; }
+.form-text { font-size: .78rem; }
+
+.input-group-text { background: var(--hams-surface-alt); border-color: var(--hams-border); color: var(--hams-text-muted); }
+
+/* =====================================================================
+   7. BADGES / STATUS PILLS
+   ===================================================================== */
+.badge { font-weight: 600; font-size: .74rem; padding: .42em .75em; border-radius: 20px; }
+
+/* =====================================================================
+   8. AUTH PAGES (login / register)
+   ===================================================================== */
+.auth-shell {
+    min-height: 100vh;
+    display: flex;
+    background: var(--hams-bg);
+}
+.auth-visual {
+    flex: 1.1;
+    background: linear-gradient(160deg, var(--hams-primary-darker) 0%, #0C4A6E 55%, #082F49 100%);
+    color: #fff;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+}
+.auth-visual::after {
+    /* signature "pulse" heartbeat line motif, ambient & abstract */
+    content: '';
+    position: absolute; left: -10%; right: -10%; bottom: 12%;
+    height: 90px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 90'%3E%3Cpolyline points='0,45 120,45 145,10 170,80 195,45 260,45 285,25 305,65 325,45 600,45' fill='none' stroke='%2384CC16' stroke-width='2' opacity='0.35'/%3E%3C/svg%3E") repeat-x;
+    background-size: 600px 90px;
+    opacity: 0.5;
+}
+.auth-visual .auth-visual-content { position: relative; z-index: 2; max-width: 420px; }
+.auth-form-side {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 24px;
+}
+.auth-form-card { width: 100%; max-width: 420px; }
+
+/* =====================================================================
+   9. MISC — spinner, toasts, utilities
+   ===================================================================== */
+.hams-spinner-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(15, 23, 42, 0.35);
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(2px);
+}
+.hams-spinner {
+    width: 52px; height: 52px; border-radius: 50%;
+    border: 4px solid rgba(56, 189, 248, 0.25);
+    border-top-color: var(--hams-primary);
+    animation: hams-spin 0.8s linear infinite;
+}
+@keyframes hams-spin { to { transform: rotate(360deg); } }
+
+.notif-dropdown { width: 340px; max-height: 400px; overflow-y: auto; padding: 0; }
+.notif-item { padding: 12px 16px; border-bottom: 1px solid var(--hams-border); display: block; }
+.notif-item:hover { background: var(--hams-surface-alt); }
+.notif-item.unread { background: var(--hams-primary-light); }
+
+.empty-state { text-align: center; padding: 60px 20px; color: var(--hams-text-muted); }
+.empty-state i { font-size: 2.6rem; color: var(--hams-border); margin-bottom: 12px; }
+
+/* =====================================================================
+   10. RESPONSIVE
+   ===================================================================== */
+@media (max-width: 991.98px) {
+    .hams-sidebar { transform: translateX(-100%); }
+    .hams-sidebar.show { transform: translateX(0); box-shadow: var(--hams-shadow-lg); }
+    .hams-main { margin-left: 0; }
+    .auth-visual { display: none; }
+    .sidebar-backdrop {
+        position: fixed; inset: 0; background: rgba(15,23,42,0.5);
+        z-index: 1035; display: none;
+    }
+    .sidebar-backdrop.show { display: block; }
+}
+
+@media (max-width: 575.98px) {
+    .hams-content { padding: 16px; }
+    .hams-topbar { padding: 0 14px; }
+    .stat-card { flex-direction: row; }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
